@@ -1,4 +1,4 @@
-function uci_encode(payload, E)
+function encoded_uci = uci_encode(payload, E, I_BIL)
 
 payload_size = length(payload);
 
@@ -35,7 +35,20 @@ end
 
 coded_blocks = cell(1, code_block_number);
 for code_block_index = 1:code_block_number
-    coded_blocks{code_block_index} = polar_coding_process(code_blocks{code_block_index}, K, E, n_max, I_IL, n_pc, n_wm_pc);
+    [coded_blocks{code_block_index}, N] = polar_coding_process(code_blocks{code_block_index}, K, E, n_max, I_IL, n_pc, n_wm_pc);
 end
 
 % rate matching, 3gpp TS 38.212, subclause 5.4
+rate_matched_bits = cell(1, code_block_number);
+for code_block_index = 1:code_block_number
+    rate_matched_bits{code_block_index} = rate_match_for_polar_code(coded_blocks{code_block_index}, K, N, E, I_BIL);
+end
+
+% code block concatenatation
+if I_seg == 0
+    encoded_uci = rate_matched_bits{1};
+elseif I_seg == 1
+    encoded_uci = [rate_matched_bits{1}, rate_matched_bits{2}]; 
+end
+
+end
