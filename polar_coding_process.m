@@ -1,4 +1,4 @@
-function [coded_block, N] = polar_coding_process(code_block, K, E, n_max, I_IL, n_pc, n_wm_pc)
+function [coded_block, N, q_info_list, q_pc_list] = polar_coding_process(code_block, K, E, n_max, I_IL, n_pc, n_wm_pc)
 
 if E <= (9/8) * 2^(ceil(log2(E))-1) && K/E < 9/16
     n_1 = ceil(log2(E))-1;
