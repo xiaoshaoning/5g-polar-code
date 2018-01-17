@@ -1,4 +1,4 @@
-function uci_decode(encoded_uci, rate_matching_pattern, K, N, I_seg, q_info_list, q_pc_list, crc_length)
+function uci_decode(encoded_uci, K, N, E, I_seg, I_BIL, q_info_list, q_pc_list, crc_length)
 
 % de-concatenation
 if I_seg == 1
@@ -13,6 +13,8 @@ else
     rx_rate_match_bits{1} = encoded_uci;
     
 end
+
+rate_matching_pattern = rate_match_for_polar_code(1:N, K, N, E, I_BIL);
 
 de_rate_matched_bits = cell(1, code_block_number);
 % de-rate-match
