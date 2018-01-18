@@ -43,6 +43,7 @@ else
     end % end for
 end % end if n_pc > 0
 
-coded_block = mod(u * G, 2);
+% coded_block = mod(u * G, 2);
+coded_block = basic_polar_encode(u);
 
 end
