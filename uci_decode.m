@@ -32,12 +32,26 @@ n = log2(N);
 bit_reverted_list = bit_revert(0:(N-1), n) + 1;
 rx_code_block = cell(1, code_block_number);
 
+% parameter for SCL decoding
+% frozen_indices = (find(frozen_bits_indicator(bit_reverted_list) == 1)).';
+% frozen_bits = zeros(length(frozen_indices), 1);
+% channel_type = 'awgn';
+% param = 0.987;
+% list_size = 32;
+
 for code_block_index = 1:code_block_number
     rx_code_block_prime = polar_decode(de_rate_matched_bits{code_block_index}, frozen_bits_indicator(bit_reverted_list));
+     
+%     rx_code_block_prime_1 = list_decode((de_rate_matched_bits{code_block_index}).', frozen_indices, frozen_bits, channel_type, param, list_size);
+%     
+%     if isequal(rx_code_block_prime, rx_code_block_prime_1.')
+%       disp('SCL decoding succeeds.');
+%     end
+    
     bit_reverted_code_block = rx_code_block_prime(bit_reverted_list);
     rx_code_block{code_block_index} = bit_reverted_code_block(sort(q_info_list+1));
     
-    crc_result = crc_for_5g(rx_code_block{code_block_index}, num2str(crc_length));
+%     crc_result = crc_for_5g(rx_code_block{code_block_index}, num2str(crc_length));
     
 %     if isequal(crc_result, zeros(1, crc_length))
 %         fprintf('crc passed for the code block %d\n', code_block_index);
