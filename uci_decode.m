@@ -33,23 +33,23 @@ bit_reverted_list = bit_revert(0:(N-1), n) + 1;
 rx_code_block = cell(1, code_block_number);
 
 % parameter for SCL decoding
-% frozen_indices = (find(frozen_bits_indicator(bit_reverted_list) == 1)).';
-% frozen_bits = zeros(length(frozen_indices), 1);
-% channel_type = 'awgn';
-% param = 0.987;
-% list_size = 32;
+info_pattern_indicator = zeros(1, N);
+info_pattern_indicator(q_info_list+1) = 1;
+path_number = 8;
+P2 = 3;
 
 for code_block_index = 1:code_block_number
-    rx_code_block_prime = polar_decode(de_rate_matched_bits{code_block_index}, frozen_bits_indicator(bit_reverted_list));
-     
-%     rx_code_block_prime_1 = list_decode((de_rate_matched_bits{code_block_index}).', frozen_indices, frozen_bits, channel_type, param, list_size);
-%     
-%     if isequal(rx_code_block_prime, rx_code_block_prime_1.')
-%       disp('SCL decoding succeeds.');
-%     end
-    
+    rx_code_block_prime = polar_decode(de_rate_matched_bits{code_block_index}, frozen_bits_indicator(bit_reverted_list));        
     bit_reverted_code_block = rx_code_block_prime(bit_reverted_list);
     rx_code_block{code_block_index} = bit_reverted_code_block(sort(q_info_list+1));
+    
+    rx_code_block_tilt = polar_scl_decode(de_rate_matched_bits{code_block_index}, N, info_pattern_indicator, crc_length, path_number, P2, K);
+    
+    if isequal(rx_code_block{code_block_index}, rx_code_block_tilt)
+      disp('SC and SCL decoding get the same result.');
+    else
+      disp('SC and SCL decoding get different results.');
+    end    
     
 %     crc_result = crc_for_5g(rx_code_block{code_block_index}, num2str(crc_length));
     
