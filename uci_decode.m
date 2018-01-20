@@ -1,4 +1,4 @@
-function uci_decode(encoded_uci, K, N, E, I_seg, I_BIL, q_info_list, q_pc_list, crc_length)
+function rx_payload = uci_decode(encoded_uci, K, N, E, I_seg, I_BIL, q_info_list, q_pc_list, crc_length, payload_size)
 
 % de-concatenation
 if I_seg == 1
@@ -39,12 +39,13 @@ for code_block_index = 1:code_block_number
     
     crc_result = crc_for_5g(rx_code_block{code_block_index}, num2str(crc_length));
     
-    if isequal(crc_result, zeros(1, crc_length))
-        fprintf('crc passed for the code block %d\n', code_block_index);
-    else
-        fprintf('crc failed for the code block %d\n', code_block_index);
-    end
-    
+%     if isequal(crc_result, zeros(1, crc_length))
+%         fprintf('crc passed for the code block %d\n', code_block_index);
+%     else
+%         fprintf('crc failed for the code block %d\n', code_block_index);
+%     end    
 end
+
+rx_payload = de_segment_for_polar_code(rx_code_block, code_block_number, crc_length, payload_size);
 
 end

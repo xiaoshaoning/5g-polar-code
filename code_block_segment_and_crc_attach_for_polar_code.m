@@ -28,10 +28,11 @@ if I_seg == 1
     end
     
     code_block_length = bitshift(A_prime, -1);
-    payload_prime_reshaped = reshape(payload_prime, code_block_number, code_block_length);
+    payload_prime_first_part = payload_prime(1:code_block_length);
+    payload_prime_second_part = payload_prime((code_block_length+1):end);
     
-    code_blocks{1} = [payload_prime_reshaped(1, :), crc_for_5g(payload_prime_reshaped(1, :), crc_type)];
-    code_blocks{2} = [payload_prime_reshaped(2, :), crc_for_5g(payload_prime_reshaped(2, :), crc_type)];
+    code_blocks{1} = [payload_prime_first_part, crc_for_5g(payload_prime_first_part, crc_type)];
+    code_blocks{2} = [payload_prime_second_part, crc_for_5g(payload_prime_second_part, crc_type)];
     K = length(code_blocks{1});
 else
     code_block_number = 1;

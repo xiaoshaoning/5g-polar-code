@@ -14,6 +14,12 @@ I_BIL = 1;
 
 rx_encoded_uci = 1-2*encoded_uci;
 
-uci_decode(rx_encoded_uci, K, N, E, I_seg, I_BIL, q_info_list, q_pc_list, crc_length);
+rx_payload = uci_decode(rx_encoded_uci, K, N, E, I_seg, I_BIL, q_info_list, q_pc_list, crc_length, payload_size);
+
+if isequal(payload, rx_payload)
+  disp('test uci passed.');
+else
+  disp('test uci failed.');
+end
 
 end
