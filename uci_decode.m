@@ -28,20 +28,22 @@ end
 frozen_bits_indicator = zeros(1, N);
 frozen_bits_indicator(setdiff(1:N, q_info_list+1)) = 1;
 
+q_info_list_without_pc = setdiff(q_info_list, q_pc_list);
+
 n = log2(N);
 bit_reverted_list = bit_revert(0:(N-1), n) + 1;
 rx_code_block = cell(1, code_block_number);
 
 % parameter for SCL decoding
 info_pattern_indicator = zeros(1, N);
-info_pattern_indicator(q_info_list+1) = 1;
+info_pattern_indicator(q_info_list_without_pc+1) = 1;
 path_number = 8;
 P2 = 3;
 
 for code_block_index = 1:code_block_number
     rx_code_block_prime = polar_decode(de_rate_matched_bits{code_block_index}, frozen_bits_indicator(bit_reverted_list));        
     bit_reverted_code_block = rx_code_block_prime(bit_reverted_list);
-    rx_code_block{code_block_index} = bit_reverted_code_block(sort(q_info_list+1));
+    rx_code_block{code_block_index} = bit_reverted_code_block(sort(q_info_list_without_pc+1));
     
     rx_code_block_tilt = polar_scl_decode(de_rate_matched_bits{code_block_index}, N, info_pattern_indicator, crc_length, path_number, P2, K);
     
@@ -51,13 +53,13 @@ for code_block_index = 1:code_block_number
       disp('SC and SCL decoding get different results.');
     end    
     
-%     crc_result = crc_for_5g(rx_code_block{code_block_index}, num2str(crc_length));
+    crc_result = crc_for_5g(rx_code_block{code_block_index}, num2str(crc_length));
     
-%     if isequal(crc_result, zeros(1, crc_length))
-%         fprintf('crc passed for the code block %d\n', code_block_index);
-%     else
-%         fprintf('crc failed for the code block %d\n', code_block_index);
-%     end    
+    if isequal(crc_result, zeros(1, crc_length))
+        fprintf('crc passed for the code block %d\n', code_block_index);
+    else
+        fprintf('crc failed for the code block %d\n', code_block_index);
+    end    
 end
 
 rx_payload = de_segment_for_polar_code(rx_code_block, code_block_number, crc_length, payload_size);

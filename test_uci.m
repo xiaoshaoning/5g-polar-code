@@ -2,11 +2,11 @@ function test_uci
 
 rng('default')
 
-payload_size = 360; 
+payload_size = 12; 
 
 payload = randi([0, 1], 1, payload_size);
 
-E = 1088;
+E = 50;
 
 I_BIL = 1;
 
