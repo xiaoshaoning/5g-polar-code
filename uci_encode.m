@@ -8,7 +8,7 @@ function [encoded_uci, ...
 
 payload_size = length(payload);
 
-if payload_size >= 360 && E >= 1088
+if (payload_size >= 360 && E >= 1088) || (payload_size >= 1013)
     I_seg = 1;
 else
     I_seg = 0;
