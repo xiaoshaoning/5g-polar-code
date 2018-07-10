@@ -26,7 +26,7 @@ if n_pc > 0
             else
                 u(index+1) = code_block_prime(k+1);
                 k = k + 1;
-                y_0 = mod(y_0, u(index+1));
+                y_0 = mod(y_0+u(index+1), 2);
             end
         else
             u(index+1) = 0;

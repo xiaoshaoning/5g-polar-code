@@ -45,13 +45,13 @@ for code_block_index = 1:code_block_number
     bit_reverted_code_block = rx_code_block_prime(bit_reverted_list);
     rx_code_block{code_block_index} = bit_reverted_code_block(sort(q_info_list_without_pc+1));
     
-    rx_code_block_tilt = polar_scl_decode(de_rate_matched_bits{code_block_index}, N, info_pattern_indicator, crc_length, path_number, P2, K);
-    
-    if isequal(rx_code_block{code_block_index}, rx_code_block_tilt)
-      disp('SC and SCL decoding get the same result.');
-    else
-      disp('SC and SCL decoding get different results.');
-    end    
+%     rx_code_block_tilt = polar_scl_decode(de_rate_matched_bits{code_block_index}, N, info_pattern_indicator, crc_length, path_number, P2, K);
+%     
+%     if isequal(rx_code_block{code_block_index}, rx_code_block_tilt)
+%       disp('SC and SCL decoding get the same result.');
+%     else
+%       disp('SC and SCL decoding get different results.');
+%     end    
     
     crc_result = crc_for_5g(rx_code_block{code_block_index}, num2str(crc_length));
     
