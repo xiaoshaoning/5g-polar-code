@@ -11,14 +11,14 @@ function PM_i = phi(PM_iminus1,L_i,u_i)
 % FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
 % more details.
 
-global approx_minstar
+% global approx_minstar
 
-approx_minstar = 0;
-
-if approx_minstar
+% approx_minstar = 0;
+% 
+% if approx_minstar
     PM_i = PM_iminus1;
     flags = 0.5*(1-sign(L_i)) ~= u_i;
     PM_i(flags) = PM_i(flags) + abs(L_i(flags));   
-else
-    PM_i = PM_iminus1 + log(1+exp(-(1-2*u_i)*L_i));
-end
+% else
+%     PM_i = PM_iminus1 + log(1+exp(-(1-2*u_i)*L_i));
+% end

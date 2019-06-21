@@ -40,20 +40,23 @@ info_pattern_indicator(q_info_list_without_pc+1) = 1;
 path_number = 8;
 P2 = 3;
 
+PC_bit_pattern = zeros(1, N);
+PC_bit_pattern(q_pc_list+1) = 1;
+
 for code_block_index = 1:code_block_number
     rx_code_block_prime = polar_decode(de_rate_matched_bits{code_block_index}, frozen_bits_indicator(bit_reverted_list));        
     bit_reverted_code_block = rx_code_block_prime(bit_reverted_list);
     rx_code_block{code_block_index} = bit_reverted_code_block(sort(q_info_list_without_pc+1));
     
-%     rx_code_block_tilt = polar_scl_decode(de_rate_matched_bits{code_block_index}, N, info_pattern_indicator, crc_length, path_number, P2, K);
-%     
-%     if isequal(rx_code_block{code_block_index}, rx_code_block_tilt)
-%       disp('SC and SCL decoding get the same result.');
-%     else
-%       disp('SC and SCL decoding get different results.');
-%     end    
+    rx_code_block_tilt = polar_scl_decode(32*de_rate_matched_bits{code_block_index}, N, info_pattern_indicator, crc_length, path_number, P2, K, PC_bit_pattern, frozen_bits_indicator);
     
-    crc_result = crc_for_5g(rx_code_block{code_block_index}, num2str(crc_length));
+    if isequal(rx_code_block{code_block_index}, rx_code_block_tilt)
+      disp('SC and SCL decoding get the same result.');
+    else
+      disp('SC and SCL decoding get different results.');
+    end    
+    
+    crc_result = crc_for_5g(rx_code_block_tilt, num2str(crc_length));
     
     if isequal(crc_result, zeros(1, crc_length))
         fprintf('crc passed for the code block %d\n', code_block_index);

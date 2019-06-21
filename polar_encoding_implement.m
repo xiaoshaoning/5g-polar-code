@@ -11,7 +11,7 @@ if n_pc > 0
     y_2 = 0;
     y_3 = 0;
     y_4 = 0;
-    
+
     for index = 0:(N-1)
         y_t = y_0;
         y_0 = y_1;
@@ -19,7 +19,7 @@ if n_pc > 0
         y_2 = y_3;
         y_3 = y_4;
         y_4 = y_t;
-        
+
         if ~isempty(find(q_info_list == index, 1))
             if ~isempty(find(q_pc_list == index, 1))
                 u(index+1) = y_0;
